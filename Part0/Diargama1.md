@@ -1,16 +1,9 @@
 ```mermaid
-graph TD;
-    Inicio --> A[Acción 1];
-    A --> B{Decisión};
-    B -->|Sí| C[Acción 2];
-    B -->|No| D[Acción 3];
-    C --> Fin;
-    D --> Fin;
-
-
-flowchart LR
-
-A[Hard] -->|Text| B(Round)
-B --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
+flowchart TD
+    A(INICIO) -->|URL| B[Ingreso página] -->|Ubicar entrada de texto| C[Ingresar texto]
+    C --> D{Presionar boton Save, enviar formulario}
+    D -->|Si| E[Recarga página] -->|Ver lista| F[Verifica texto ingresado]
+    D -->|No| G[Ver lista]
+    F --> H(FIN)
+    G --> H(FIN)
+	
