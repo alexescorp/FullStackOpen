@@ -1,78 +1,31 @@
 import { useState } from 'react'
 
 const App = () => {
-  // guarda los clics de cada botón en su propio estado
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
-  const [all, setAll] = useState(0)
+  const anecdotes = [
+    '- If it hurts, do it more often.',
+    '- Adding manpower to a late software project makes it later!',
+    '- The first 90 percent of the code accounts for the first 10 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    '- Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    '- Premature optimization is the root of all evil.',
+    '- Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    '- Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    '- The only way to go fast, is to go well.'
+  ]
 
-  const handleClick = (tipo) => {
-    if (tipo === 'good') {
-      setGood(good + 1)
-    } else if (tipo === 'neutral') {
-      setNeutral(neutral + 1)
-    } else if (tipo === 'bad') {
-      setBad(bad + 1)
-    }
-    setAll(all + 1)
+  const [selected, setSelected] = useState(5)
+
+  const handleAnecdota = () => {
+    const newNumber = Math.floor(Math.random() * (7 - 0 + 1)) + 0;
+    setSelected(newNumber)
   }
 
   return (
     <div>
-      <h2>give feedback</h2>
-      <Button onClick={() => handleClick("good")} text="Bueno" />
-      <Button onClick={() => handleClick("neutral")} text="Neutral" />
-      <Button onClick={() => handleClick("bad")} text="Malo" />
-
-      <h2>statistics</h2>
-      <Statistics good={good} neutral={neutral} bad={bad}></Statistics>
+      <p>{anecdotes[selected]}</p>
+      <button onClick={handleAnecdota}>siguiente anecdota</button>
     </div>
   )
 }
-
-const Button = ({ onClick, text }) => (
-  <button onClick={onClick}>{text}</button>
-)
-
-const Statistics = ({ good, neutral, bad }) => {
-
-  if (good === 0 && neutral === 0 && bad === 0) {
-    return (
-      <div>
-        No feeedback given
-      </div>
-    )
-  }
-
-  const total = good + neutral + bad
-  const avg = (((good * 1) + (neutral * 0) + (bad * -1)) / total)
-  const positivos = (good * 100) / total
-
-  return (
-    <div>
-      <table>
-        <tbody>
-          <StatisticLine text="god" value={good} />
-          <StatisticLine text="neutral" value={neutral} />
-          <StatisticLine text="bad" value={bad} />
-          <StatisticLine text="all" value={total} />
-          <StatisticLine text="average" value={avg.toFixed(2)} />
-          <StatisticLine text="positive" value={`${positivos.toFixed(2)} %`} />
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
-const StatisticLine = ({ text, value }) => (
-  <>
-    <tr>
-      <td>{text}:</td>
-      <td> {value}</td>
-    </tr>
-  </>
-)
 
 
 export default App
