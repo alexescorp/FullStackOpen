@@ -14,6 +14,7 @@ const App = () => {
 
   const [selected, setSelected] = useState(5)
   const [votosArray, setVotes] = useState(new Array(anecdotes.length).fill(0));
+  const [maxIndex, setMaxIndex] = useState(null);
 
   const handleAnecdota = () => {
     const indice = Math.floor(Math.random() * anecdotes.length)
@@ -24,14 +25,21 @@ const App = () => {
     const nuevosVotos = [...votosArray] //Copia el array existente para no mutar el estado directamente
     nuevosVotos[selected] += 1
     setVotes(nuevosVotos)
+
+    const maxValue = Math.max(...nuevosVotos)
+    const index = nuevosVotos.indexOf(maxValue)
+    setMaxIndex(index);
   }
 
   return (
     <div>
+      <h2>Anecdote with most votes</h2>
       <p>{anecdotes[selected]}</p>
       <p>has {votosArray[selected]} votes</p>
       <button onClick={handleVotos}>votes</button>
       <button onClick={handleAnecdota}>siguiente anecdota</button>
+      <h2>Anecdote with most votes</h2>
+      <p>{anecdotes[maxIndex]}</p>
     </div>
   )
 }
