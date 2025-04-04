@@ -19,8 +19,8 @@ const App = () => {
         id: 3
       },
       {
-        name: 'Parte de prueba',
-        exercises: 9,
+        name: 'Redux',
+        exercises: 11,
         id: 4
       }
     ]
@@ -37,8 +37,14 @@ const Course = ({ course }) => {
       <ul>
         {course.parts.map(datos => <li key={datos.id}>{datos.name} {datos.exercises}</li>)}
       </ul>
-    </div>
-  )
+      <TotalExercises parts = {course.parts} />
+    </div> 
+   )
+}
+
+const TotalExercises = ({parts}) => {
+  const total = parts.reduce((sum, part) => sum + part.exercises, 0)
+  return <b>total of {total} exercises total</b>
 }
 
 export default App
