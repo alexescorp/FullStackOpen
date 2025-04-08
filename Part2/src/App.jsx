@@ -30,21 +30,21 @@ const App = () => {
 }
 
 const Course = ({ course }) => {
-  console.log(course)
+  const total = course.parts.reduce((s, p) => {
+    return s + p.exercises
+  }, 0)
+
+
   return (
     <div>
       <h1>{course.name}</h1>
       <ul>
         {course.parts.map(datos => <li key={datos.id}>{datos.name} {datos.exercises}</li>)}
       </ul>
-      <TotalExercises parts = {course.parts} />
-    </div> 
-   )
-}
 
-const TotalExercises = ({parts}) => {
-  const total = parts.reduce((sum, part) => sum + part.exercises, 0)
-  return <b>total of {total} exercises total</b>
+      <b>total of {total} exercises total</b>
+    </div>
+  )
 }
 
 export default App
