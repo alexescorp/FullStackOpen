@@ -1,50 +1,74 @@
 const App = () => {
-  const course = {
-    id: 1,
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10,
-        id: 1
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7,
-        id: 2
-      },
-      {
-        name: 'State of a component',
-        exercises: 14,
-        id: 3
-      },
-      {
-        name: 'Redux',
-        exercises: 11,
-        id: 4
-      }
-    ]
-  }
 
-  return <Course course={course} />
+  const course = [
+    {
+      name: 'Half Stack application development',
+      id: 1,
+      parts: [
+        {
+          name: 'Fundamentals of React',
+          exercises: 10,
+          id: 1
+        },
+        {
+          name: 'Using props to pass data',
+          exercises: 7,
+          id: 2
+        },
+        {
+          name: 'State of a component',
+          exercises: 14,
+          id: 3
+        },
+        {
+          name: 'Redux',
+          exercises: 11,
+          id: 4
+        }
+      ]
+    },
+    {
+      name: 'Node.js',
+      id: 2,
+      parts: [
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'Middlewares',
+          exercises: 7,
+          id: 2
+        }
+      ]
+    }
+  ]
+
+  return <CourseList courses={course} />
 }
 
-const Course = ({ course }) => {
-  const total = course.parts.reduce((s, p) => {
-    return s + p.exercises
-  }, 0)
-
-
+const CourseList = ({ courses }) => {
   return (
     <div>
-      <h1>{course.name}</h1>
-      <ul>
-        {course.parts.map(datos => <li key={datos.id}>{datos.name} {datos.exercises}</li>)}
-      </ul>
-
-      <b>total of {total} exercises total</b>
+      <h2>Web development curriculum</h2>
+      {courses.map((course) => {
+        const totalExercises = course.parts.reduce((sum, part) => sum + part.exercises, 0);
+        return (
+          < div key={course.id} >
+            <h3>{course.name}</h3>
+            <ul>
+              {course.parts.map((part) => (
+                <li key={part.id}>{part.name} {part.exercises}</li>
+              ))}
+            </ul>
+            <p><strong>total of {totalExercises} exercises</strong></p>
+          </div>
+        );
+      })}
     </div>
-  )
-}
+  );
+};
+
 
 export default App
