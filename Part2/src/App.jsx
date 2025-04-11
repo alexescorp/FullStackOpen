@@ -1,53 +1,44 @@
-import CourseList from './components/CourseList'
+import { useState } from 'react'
 
 const App = () => {
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas' }
+  ])
+  const [newName, setNewName] = useState('')
 
-  const course = [
+  const handlePersonChange = (event) => {
+    setNewName(event.target.value)
+  }
+
+  const addPersons = (event) => {
+    event.preventDefault()  //evita la acción predeterminada de enviar un formulario
+    const personaObjeto =
     {
-      name: 'Half Stack application development',
-      id: 1,
-      parts: [
-        {
-          name: 'Fundamentals of React',
-          exercises: 10,
-          id: 1
-        },
-        {
-          name: 'Using props to pass data',
-          exercises: 7,
-          id: 2
-        },
-        {
-          name: 'State of a component',
-          exercises: 14,
-          id: 3
-        },
-        {
-          name: 'Redux',
-          exercises: 11,
-          id: 4
-        }
-      ]
-    },
-    {
-      name: 'Node.js',
-      id: 2,
-      parts: [
-        {
-          name: 'Routing',
-          exercises: 3,
-          id: 1
-        },
-        {
-          name: 'Middlewares',
-          exercises: 7,
-          id: 2
-        }
-      ]
+      name: newName,
     }
-  ]
 
-  return <CourseList courses={course} />
+    setPersons(persons.concat(personaObjeto))
+    setNewName('')
+  }
+
+  return (
+    <div>
+      <h2>Phonebook</h2>
+      <form onSubmit={addPersons}>
+        <div>
+          name: <input value={newName} placeholder='Ingrese un contacto ..' onChange={handlePersonChange} />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+      <h2>Numbers</h2>
+
+      <ul>
+        {persons.map(note => <li key={note.name}> {note.name} </li>)}
+      </ul>
+    </div>
+  )
 }
 
 export default App
