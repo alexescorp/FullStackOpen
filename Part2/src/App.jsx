@@ -1,14 +1,17 @@
 import { useState } from 'react'
 
 const App = () => {
+
   const [persons, setPersons] = useState([
-    {
-      name: 'Arto Hellas',
-      number: '39-44-532352'
-    }
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ])
+
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [filtro, setFiltro] = useState('')
 
   const handlePersonChange = (event) => {
     setNewName(event.target.value)
@@ -17,6 +20,12 @@ const App = () => {
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
   }
+
+  const handleFiltroChange = (event) => {
+    setFiltro(event.target.value)
+  }
+
+  const filtraPersonas = persons.filter((person) => person.name.toLowerCase().includes(filtro.toLowerCase()))
 
   const addPersons = (event) => {
     event.preventDefault()  //evita la acción predeterminada de enviar un formulario
@@ -38,6 +47,11 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        filter show with: <input placeholder='Buscar ..' onChange={handleFiltroChange} />
+      </div>
+
+      <h2>add a new</h2>
       <form onSubmit={addPersons}>
         <div>
           name: <input value={newName} placeholder='Ingrese un nombre ..' onChange={handlePersonChange} />
@@ -52,7 +66,11 @@ const App = () => {
       <h2>Numbers</h2>
 
       <ul>
-        {persons.map(note => <li key={note.name}> {note.name} | {note.number} </li>)}
+        {filtraPersonas.map((person) => (
+          <li key={person.name}>
+            {person.name} - {person.number}
+          </li>
+        ))}
       </ul>
     </div>
   )
