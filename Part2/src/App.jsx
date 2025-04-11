@@ -12,10 +12,15 @@ const App = () => {
 
   const addPersons = (event) => {
     event.preventDefault()  //evita la acción predeterminada de enviar un formulario
-    const personaObjeto =
-    {
-      name: newName,
+
+    const existe = persons.some(p => p.name.toLowerCase() === newName.toLowerCase())
+
+    if (existe) {
+      alert(`${newName} is already added to phonebook`)
+      return
     }
+
+    const personaObjeto = { name: newName, }
 
     setPersons(persons.concat(personaObjeto))
     setNewName('')
