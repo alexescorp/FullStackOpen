@@ -15,7 +15,16 @@ const create = newObject => {
     })
 }
 
+const deletePerson = (id) => {
+    const request = axios.delete(baseUrl + '/' + id)
+    return request.then(response => {
+        return response.data
+    })
+}
+
 export default {
     consultarPersonas: getAll,
-    createPerson: create
+    createPerson: create,
+    deletePerson: deletePerson
+
 }

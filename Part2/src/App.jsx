@@ -53,6 +53,19 @@ const App = () => {
     setNewNumber('')
   }
 
+  const borrarPersons = (persona) => {
+    if (window.confirm(`¿Delete ${persona.name}?`)) {
+      personService
+        .deletePerson(persona.id)
+        .then(response => {
+          setPersons(persons.filter(p => p.id !== response.id))
+        })
+        .catch(error => {
+          alert(`Error al eliminar a ${persona.name}: ${error}`)
+        })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -63,7 +76,7 @@ const App = () => {
       <PersonForm handleSubmit={addPersons} valorNombre={newName} handleNombreChange={handlePersonChange} valorNumero={newNumber} handleNumeroChange={handleNumberChange} />
 
       <h2>Numbers</h2>
-      <Persons personasFiltradas={filtraPersonas} />
+      <Persons personasFiltradas={filtraPersonas} deletePersons={borrarPersons} />
 
     </div>
   )
@@ -93,13 +106,14 @@ const PersonForm = ({ handleSubmit, valorNombre, handleNombreChange, valorNumero
   )
 }
 
-const Persons = ({ personasFiltradas }) => {
+const Persons = ({ personasFiltradas, deletePersons }) => {
   return (
     <div>
       <ul>
         {personasFiltradas.map((personasLista) => (
           <li key={personasLista.name}>
-            {personasLista.name} - {personasLista.number}
+            {personasLista.name} | {personasLista.number}
+            <button onClick={() => deletePersons(personasLista)}>delete</button>
           </li>
         ))}
       </ul>
