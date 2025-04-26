@@ -37,18 +37,30 @@ const App = () => {
     const existe = persons.some(p => p.name.toLowerCase() === newName.toLowerCase())
 
     if (existe) {
-      alert(`${newName} is already added to phonebook`)
-      return
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const persona = persons.find(n => n.name === newName)
+        const newObject = { ...persona, number: newNumber }
+        personService
+          .updatePerson(persona.id, newObject)
+          .then(response => {
+            setPersons(persons.map(p => p.id !== response.id ? p : response))
+          })
+          .catch(error => {
+            alert(`Error al eliminar a ${persona.name}: ${error}`)
+          })
+      } else {
+        return
+      }
+    } else {
+
+      const personaObjeto = { name: newName, number: newNumber }
+
+      personService
+        .createPerson(personaObjeto)
+        .then(response => {
+          setPersons(persons.concat(response))
+        })
     }
-
-    const personaObjeto = { name: newName, number: newNumber }
-
-    personService
-      .createPerson(personaObjeto)
-      .then(response => {
-        setPersons(persons.concat(response))
-      })
-
     setNewName('')
     setNewNumber('')
   }
