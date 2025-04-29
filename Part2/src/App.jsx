@@ -16,6 +16,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filtro, setFiltro] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const handlePersonChange = (event) => {
     setNewName(event.target.value)
@@ -43,10 +44,16 @@ const App = () => {
         personService
           .updatePerson(persona.id, newObject)
           .then(response => {
+            setErrorMessage(
+              `Changed '${newName}'`
+            )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 4000)
             setPersons(persons.map(p => p.id !== response.id ? p : response))
           })
           .catch(error => {
-            alert(`Error al eliminar a ${persona.name}: ${error}`)
+            alert(`Error al modificar a ${persona.name}: ${error}`)
           })
       } else {
         return
@@ -58,6 +65,12 @@ const App = () => {
       personService
         .createPerson(personaObjeto)
         .then(response => {
+          setErrorMessage(
+            `Added '${newName}'`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 4000)
           setPersons(persons.concat(response))
         })
     }
@@ -81,7 +94,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-
+      <Notification message={errorMessage} />
       <Filter handleChange={handleFiltroChange} />
 
       <h2>add a new</h2>
@@ -133,5 +146,16 @@ const Persons = ({ personasFiltradas, deletePersons }) => {
   )
 }
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className="error">
+      <p>{message}</p>
+    </div>
+  )
+}
 
 export default App
