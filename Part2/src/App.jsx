@@ -16,7 +16,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filtro, setFiltro] = useState('')
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notificacionMessage, setNotificacionMessage] = useState(null)
+  const [notificacionTipo, setNotificacionTipo] = useState(null)
 
   const handlePersonChange = (event) => {
     setNewName(event.target.value)
@@ -44,16 +45,23 @@ const App = () => {
         personService
           .updatePerson(persona.id, newObject)
           .then(response => {
-            setErrorMessage(
+            setNotificacionMessage(
               `Changed '${newName}'`
             )
+            setNotificacionTipo('ok')
             setTimeout(() => {
-              setErrorMessage(null)
+              setNotificacionMessage(null)
             }, 4000)
             setPersons(persons.map(p => p.id !== response.id ? p : response))
           })
           .catch(error => {
-            alert(`Error al modificar a ${persona.name}: ${error}`)
+            setNotificacionMessage(
+              `Information of '${newName}' has already been removed fromm server`
+            )
+            setNotificacionTipo('error')
+            setTimeout(() => {
+              setNotificacionMessage(null)
+            }, 4000)
           })
       } else {
         return
@@ -65,11 +73,12 @@ const App = () => {
       personService
         .createPerson(personaObjeto)
         .then(response => {
-          setErrorMessage(
+          setNotificacionMessage(
             `Added '${newName}'`
           )
+          setNotificacionTipo('ok')
           setTimeout(() => {
-            setErrorMessage(null)
+            setNotificacionMessage(null)
           }, 4000)
           setPersons(persons.concat(response))
         })
@@ -85,16 +94,16 @@ const App = () => {
         .then(response => {
           setPersons(persons.filter(p => p.id !== response.id))
         })
-        .catch(error => {
-          alert(`Error al eliminar a ${persona.name}: ${error}`)
-        })
+      // .catch(error => {
+      //   alert(`Error al eliminar a ${persona.name}: ${error}`)
+      // })
     }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={errorMessage} />
+      <Notification message={notificacionMessage} tipoNotificacion={notificacionTipo} />
       <Filter handleChange={handleFiltroChange} />
 
       <h2>add a new</h2>
@@ -146,16 +155,24 @@ const Persons = ({ personasFiltradas, deletePersons }) => {
   )
 }
 
-const Notification = ({ message }) => {
+const Notification = ({ message, tipoNotificacion }) => {
   if (message === null) {
     return null
   }
 
-  return (
-    <div className="error">
-      <p>{message}</p>
-    </div>
-  )
+  if (tipoNotificacion === 'ok') {
+    return (
+      <div className="right">
+        <p>{message}</p>
+      </div>
+    )
+  } else {
+    return (
+      <div className="error">
+        <p>{message}</p>
+      </div>
+    )
+  }
 }
 
 export default App
